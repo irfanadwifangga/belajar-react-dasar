@@ -9,6 +9,7 @@ interface User {
 }
 
 export default function FetchUser() {
+	// State variables
 	const [currentPage, setCurrentPage] = useState(1);
 	const usersPerPage = 10;
 	const [users, setUsers] = useState<User[]>([]);
@@ -16,6 +17,7 @@ export default function FetchUser() {
 	const [error, setError] = useState<string | undefined>();
 	const [searchTerm, setSearchTerm] = useState('');
 
+	// Filter users based on search term
 	const filteredUsers = users.filter((user) =>
 		`${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
 	);
@@ -27,6 +29,7 @@ export default function FetchUser() {
 		currentPage * usersPerPage
 	);
 
+	// Fetch user data from the API
 	const fetchUserData = async () => {
 		try {
 			const response = await fetch('https://dummyjson.com/users');
@@ -41,10 +44,12 @@ export default function FetchUser() {
 		}
 	};
 
+	// Fetch data on component mount
 	useEffect(() => {
 		fetchUserData();
 	}, []);
 
+	// Render loading, error, or user list
 	if (isLoading) {
 		return (
 			<div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
@@ -56,6 +61,7 @@ export default function FetchUser() {
 		);
 	}
 
+	// Error state
 	if (error) {
 		return (
 			<div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-50 flex items-center justify-center">
@@ -76,6 +82,7 @@ export default function FetchUser() {
 		);
 	}
 
+	// Main content
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4">
 			<div className="container mx-auto max-w-4xl">
